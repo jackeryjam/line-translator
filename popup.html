@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      width: 300px;
+      padding: 16px;
+      font-family: Arial, sans-serif;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 8px;
+      background: #4a89dc;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #357abd;
+    }
+    .status {
+      margin-top: 12px;
+      padding: 8px;
+      border-radius: 4px;
+      display: none;
+    }
+    .success {
+      background: #dff0d8;
+      color: #3c763d;
+    }
+    .error {
+      background: #f2dede;
+      color: #a94442;
+    }
+    .help-text {
+      margin-top: 20px;
+      padding: 12px;
+      background: #f8f9fa;
+      border-radius: 4px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #666;
+    }
+    .help-text a {
+      color: #4a89dc;
+      text-decoration: none;
+    }
+    .help-text a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-group">
+    <label for="appid">百度翻译 APP ID</label>
+    <input type="text" id="appid" placeholder="请输入APP ID">
+  </div>
+  <div class="form-group">
+    <label for="key">百度翻译密钥</label>
+    <input type="password" id="key" placeholder="请输入密钥">
+  </div>
+  <button id="save">保存配置</button>
+  <div id="status" class="status"></div>
+  
+  <div class="help-text">
+    <p><strong>如何获取百度翻译 API 密钥：</strong></p>
+    <ol>
+      <li>访问 <a href="https://api.fanyi.baidu.com/product/11" target="_blank">百度翻译开放平台</a></li>
+      <li>注册/登录百度账号</li>
+      <li>完成开发者认证</li>
+      <li>创建应用，选择"通用翻译服务"</li>
+      <li>获取 APP ID 和密钥</li>
+    </ol>
+    <p>注：免费版每月可翻译200万字符</p>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html> 
