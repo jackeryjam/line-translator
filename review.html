@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>生词本</title>
+    <style>
+        body {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .word-item {
+            padding: 15px;
+            margin-bottom: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .word-info {
+            flex-grow: 1;
+        }
+        
+        .word {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .translation {
+            display: none;
+            color: #666;
+            margin-top: 8px;
+            padding-left: 10px;
+            border-left: 3px solid #4a89dc;
+        }
+        
+        .timestamp {
+            color: #999;
+            font-size: 0.8em;
+            margin-top: 5px;
+        }
+        
+        .show-translation {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            margin-left: 15px;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+        
+        .show-translation:hover {
+            opacity: 1;
+        }
+        
+        .show-translation svg {
+            width: 24px;
+            height: 24px;
+        }
+        
+        .eye-open, .eye-closed {
+            fill: none;
+            stroke: #666;
+            stroke-width: 2;
+            transition: all 0.3s;
+        }
+        
+        .show-translation:hover .eye-open,
+        .show-translation:hover .eye-closed {
+            stroke: #4a89dc;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .delete-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+        
+        .delete-button:hover {
+            opacity: 1;
+        }
+        
+        .delete-button svg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .delete-icon {
+            fill: none;
+            stroke: #dc3545;
+            stroke-width: 2;
+            transition: all 0.3s;
+        }
+        
+        .delete-button:hover .delete-icon {
+            stroke: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <h1>生词本</h1>
+    <div id="wordsList"></div>
+    <script src="db.js"></script>
+    <script src="review.js"></script>
+</body>
+</html> 

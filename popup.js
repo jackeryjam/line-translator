@@ -40,4 +40,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       status.style.display = 'block';
     }
   });
+
+  // 添加生词本按钮点击事件
+  document.getElementById('reviewButton').addEventListener('click', () => {
+    console.log('Opening review page...');
+    chrome.tabs.create({ url: 'review.html' });
+  });
 }); 

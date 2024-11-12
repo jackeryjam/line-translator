@@ -65,6 +65,19 @@
     .help-text a:hover {
       text-decoration: underline;
     }
+    #reviewButton {
+      margin-top: 16px;
+      width: 100%;
+      padding: 8px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #reviewButton:hover {
+      background: #218838;
+    }
   </style>
 </head>
 <body>
@@ -77,6 +90,7 @@
     <input type="password" id="key" placeholder="请输入密钥">
   </div>
   <button id="save">保存配置</button>
+  <button id="reviewButton">查看生词本</button>
   <div id="status" class="status"></div>
   
   <div class="help-text">

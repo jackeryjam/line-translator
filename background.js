@@ -252,4 +252,119 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
       console.error('Translation process failed:', error);
     }
   }
+});
+
+// 添加数据库操作
+async function openWordsDB() {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open('WordsDB', 1);
+        
+        request.onerror = () => reject(request.error);
+        request.onsuccess = () => resolve(request.result);
+        
+        request.onupgradeneeded = (event) => {
+            const db = event.target.result;
+            if (!db.objectStoreNames.contains('words')) {
+                const store = db.createObjectStore('words', { 
+                    keyPath: 'id', 
+                    autoIncrement: true 
+                });
+                store.createIndex('timestamp', 'timestamp');
+            }
+        };
+    });
+}
+
+async function saveWord(wordData) {
+    console.log('Background saving word:', wordData);
+    const db = await openWordsDB();
+    const tx = db.transaction('words', 'readwrite');
+    const store = tx.objectStore('words');
+    return new Promise((resolve, reject) => {
+        const request = store.add(wordData);
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+    });
+}
+
+async function getAllWords() {
+    console.log('Background getting all words');
+    const db = await openWordsDB();
+    const tx = db.transaction('words', 'readonly');
+    const store = tx.objectStore('words');
+    return new Promise((resolve, reject) => {
+        const request = store.getAll();
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+    });
+}
+
+// 监听消息
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    console.log('Background received message:', request);
+    
+    if (request.type === 'saveWord') {
+        saveWord(request.wordData)
+            .then(result => {
+                console.log('Word saved:', result);
+                sendResponse({ success: true, result });
+            })
+            .catch(error => {
+                console.error('Error saving word:', error);
+                sendResponse({ success: false, error: error.message });
+            });
+        return true; // 保持消息通道开放
+    }
+    
+    if (request.type === 'getWords') {
+        getAllWords()
+            .then(words => {
+                console.log('Retrieved words:', words);
+                sendResponse({ success: true, words });
+            })
+            .catch(error => {
+                console.error('Error getting words:', error);
+                sendResponse({ success: false, error: error.message });
+            });
+        return true; // 保持消息通道开放
+    }
+    
+    if (request.type === 'deleteWord') {
+        console.log('Deleting word with ID:', request.id);
+        (async () => {
+            try {
+                const db = await openWordsDB();
+                const tx = db.transaction('words', 'readwrite');
+                const store = tx.objectStore('words');
+                
+                return new Promise((resolve, reject) => {
+                    const deleteRequest = store.delete(request.id);
+                    
+                    deleteRequest.onsuccess = () => {
+                        console.log('Word deleted successfully');
+                        sendResponse({ success: true });
+                        resolve();
+                    };
+                    
+                    deleteRequest.onerror = () => {
+                        console.error('Error deleting word:', deleteRequest.error);
+                        sendResponse({ success: false, error: deleteRequest.error.message });
+                        reject(deleteRequest.error);
+                    };
+                    
+                    tx.oncomplete = () => {
+                        console.log('Delete transaction completed');
+                    };
+                    
+                    tx.onerror = (event) => {
+                        console.error('Transaction error:', event.target.error);
+                    };
+                });
+            } catch (error) {
+                console.error('Error in delete operation:', error);
+                sendResponse({ success: false, error: error.message });
+            }
+        })();
+        return true; // 保持消息通道开放
+    }
 }); 
